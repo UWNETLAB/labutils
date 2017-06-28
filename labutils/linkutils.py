@@ -1,11 +1,12 @@
 import warnings
 
-def rank_pairs(comp, by, method='col'):
+
+def rank_pairs(comp, by, method='cols',ascending=True):
     """
     rank_pairs sorts pairs from a recordlinkage.Compare object, based on computed comparison values.
 
     Available methods:
-        * 'col': sort by values in a column.
+        * 'cols': sort by first, column, ties broken by subsequent columns. See pandas.DataFrame.sort_values.
         * 'sum': sort by the sum of a list of columns.
         * 'avg': sort by the mean of a list of columns.
 
@@ -14,38 +15,84 @@ def rank_pairs(comp, by, method='col'):
     :param str method: A the method to sort by (see above).
     :return: A MultiIndexed pandas.DataFrame
     """
-    working_df = comp.vectors.copy()
 
+    # Sorting by columns is simple!
     if method == 'value':
 
-        # Get column name and raise a warning if there is a bad input.
-        if isinstance(by, str):
-            # Strings work, but break the code signature.
-            col_name = by
-            warnings.warn('Value of "by" is a string, not a list. Converting implicitly.')
-        if isinstance(by, list):
-            # With this method, only one column should be named.
-            # The first column name is taken, and a warning is raised
-            # for unused values.
-            if len(by) > 1:
-                warnings.warn('Ranking method "col" uses a single column. Unused values in "by".')
-            col_name = by[0]
+        # Enforce input type.
+        if not isinstance(by, list):
+            raise ValueError('Value of "by" must be a list of column names.')
 
-        working_df['temp_sorting_col'] = working_df[col_name]
+        return comp.vectors.sort_values(by=by)
 
-    elif method == 'sum':
-        pass
+    # For aggregate methods, a bit of extra work is required.
+
+    working_df = comp.vectors.copy()
+
+    def find_name(base):
+        """
+        For finding an unused column name.
+
+        Examples:
+
+        * 'sum' is taken, so 'sum2' is used.
+        * 'sum', 'sum2', and 'sum3' are taken, so 'sum4' is used.
+
+        :param base: A base string e.g.
+        :return:
+        """
+        # Find an unused column name
+        col_name = base
+        if col_name in working_df.columns:
+            i = 2
+            while True:
+                if col_name + '_' + str(i) in working_df.columns:
+                    i += 1
+                    continue
+                else:
+                    col_name += '_' + str(i)
+                    break
+        return col_name
+
+    if method == 'sum':
+
+
+        # Enforce input type.
+        if not isinstance(by, list):
+            raise ValueError('Value of "by" must be a list of column names.')
+
+        # Find an unused column name
+        temp_col = find_name('sum')
+
+        # Make a temporary column, which is the sum of columns of interest.
+        working_df[temp_col] = sum([working_df[c] for c in by])
+
+        return working_df.sort_values(by=temp_col,ascending=ascending)
 
     elif method == 'avg':
-        pass
+
+        working_df = comp.vectors.copy()
+
+        # Enforce input type.
+        if not isinstance(by, list):
+            raise ValueError('Value of "by" must be a list of column names.')
+
+        # Find an unused column name
+        temp_col = find_name('avg')
+
+        # Make a temporary column, which is the sum of columns of interest.
+        working_df[temp_col] = sum([working_df[c] for c in by])/len(by)
+
+        return working_df.sort_values(by=temp_col,ascending=ascending)
 
     else:
         raise ValueError('Unrecognized ranking method.')
+        return None
 
-    return None
 
 def refine_mapping():
     return None
+
 
 def fuse():
     return None
