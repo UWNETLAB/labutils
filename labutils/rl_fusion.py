@@ -9,6 +9,30 @@ import pandas as pd
 import jellyfish
 import numpy as np
 
+def _new_column_name(base, df, sep='_'):
+        """
+        For finding an unused column name.
+
+        Examples:
+
+        * 'sum' is taken, so 'sum2' is used.
+        * 'sum', 'sum2', and 'sum3' are taken, so 'sum4' is used.
+
+        :param base: A base string e.g.
+        :return:
+        """
+        # Find an unused column name
+        col_name = base
+        if col_name in df.columns:
+            i = 2
+            while True:
+                if col_name + sep + str(i) in df.columns:
+                    i += 1
+                    continue
+                else:
+                    col_name += sep + str(i)
+                    break
+        return col_name
 
 def rank_pairs(comp, by, method='cols',ascending=False):
     """
@@ -39,33 +63,7 @@ def rank_pairs(comp, by, method='cols',ascending=False):
         working_comp.vectors = working_comp.vectors.sort_values(by=by, ascending=ascending)
         return working_comp
 
-    # For aggregate methods, a bit of extra work is required.
-
-    def find_name(base):
-        """
-        For finding an unused column name.
-
-        Examples:
-
-        * 'sum' is taken, so 'sum2' is used.
-        * 'sum', 'sum2', and 'sum3' are taken, so 'sum4' is used.
-
-        :param base: A base string e.g.
-        :return:
-        """
-        # Find an unused column name
-        col_name = base
-        if col_name in working_comp.vectors.columns:
-            i = 2
-            while True:
-                if col_name + '_' + str(i) in working_comp.vectors.columns:
-                    i += 1
-                    continue
-                else:
-                    col_name += '_' + str(i)
-                    break
-        return col_name
-
+    # Sort by row sum for specified columns
     if method == 'sum':
 
 
@@ -74,7 +72,7 @@ def rank_pairs(comp, by, method='cols',ascending=False):
             raise ValueError('Value of "by" must be a list of column names.')
 
         # Find an unused column name
-        temp_col = find_name('sum')
+        temp_col = _new_column_name('sum', working_comp.vectors)
 
         # Make a temporary column, which is the sum of columns of interest.
         working_comp.vectors[temp_col] = sum([working_comp.vectors[c] for c in by])
@@ -82,6 +80,7 @@ def rank_pairs(comp, by, method='cols',ascending=False):
         working_comp.vectors =  working_comp.vectors.sort_values(by=temp_col,ascending=ascending)
         return working_comp
 
+    # Sort by row mean for specified columns
     elif method == 'avg':
 
         # Enforce input type.
@@ -89,7 +88,7 @@ def rank_pairs(comp, by, method='cols',ascending=False):
             raise ValueError('Value of "by" must be a list of column names.')
 
         # Find an unused column name
-        temp_col = find_name('avg')
+        temp_col = _new_column_name('avg', working_comp.vectors)
 
         # Make a temporary column, which is the sum of columns of interest.
         working_comp.vectors[temp_col] = sum([working_comp.vectors[c] for c in by])/len(by)
@@ -158,6 +157,5 @@ def refine_mapping(comp, left_unique=True, right_unique=True):
     working_comp.vectors = working_comp.vectors.iloc[keep_vector]
     return working_comp
 
-def fuse():
-    return None
-
+def fast_fuse(comp, right_suffix='R', left_suffix='L'):
+    pass
