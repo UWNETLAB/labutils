@@ -16,4 +16,4 @@
 # If not, see <http://www.gnu.org/licenses/>.
 # *********************************************************************************************
 
-from labutils.linkutils import *
+from labutils.rl_fusion import *
