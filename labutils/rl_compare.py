@@ -61,6 +61,8 @@ def compare_lists(s1, s2):
 
 def compare_fuzzy_substring(s1, s2):
     # TODO: Make the scoring scheme values optional parameters.
+    # TODO: Second paragraph doesn't finish.
+    # Note: "dynamic programming"?
     """
        A custom comparison function to be used with the Compare.compare() method
        within recordlinkage. This is used to compare two strings, computing a

@@ -4,35 +4,8 @@
 # *****************************************************************************
 
 import copy
-import warnings
 import pandas as pd
-import jellyfish
-import numpy as np
-
-def _new_column_name(base, df, sep='_'):
-        """
-        For finding an unused column name.
-
-        Examples:
-
-        * 'sum' is taken, so 'sum2' is used.
-        * 'sum', 'sum2', and 'sum3' are taken, so 'sum4' is used.
-
-        :param base: A base string e.g.
-        :return:
-        """
-        # Find an unused column name
-        col_name = base
-        if col_name in df.columns:
-            i = 2
-            while True:
-                if col_name + sep + str(i) in df.columns:
-                    i += 1
-                    continue
-                else:
-                    col_name += sep + str(i)
-                    break
-        return col_name
+from labutils.misc import new_identifier_name
 
 def rank_pairs(comp, by, method='cols',ascending=False):
     """
@@ -72,7 +45,7 @@ def rank_pairs(comp, by, method='cols',ascending=False):
             raise ValueError('Value of "by" must be a list of column names.')
 
         # Find an unused column name
-        temp_col = _new_column_name('sum', working_comp.vectors)
+        temp_col = new_identifier_name('sum', working_comp.vectors.columns)
 
         # Make a temporary column, which is the sum of columns of interest.
         working_comp.vectors[temp_col] = sum([working_comp.vectors[c] for c in by])
@@ -88,7 +61,7 @@ def rank_pairs(comp, by, method='cols',ascending=False):
             raise ValueError('Value of "by" must be a list of column names.')
 
         # Find an unused column name
-        temp_col = _new_column_name('avg', working_comp.vectors)
+        temp_col = new_identifier_name('avg', working_comp.vectors.columns)
 
         # Make a temporary column, which is the sum of columns of interest.
         working_comp.vectors[temp_col] = sum([working_comp.vectors[c] for c in by])/len(by)
@@ -157,5 +130,38 @@ def refine_mapping(comp, left_unique=True, right_unique=True):
     working_comp.vectors = working_comp.vectors.iloc[keep_vector]
     return working_comp
 
-def fast_fuse(comp, right_suffix='R', left_suffix='L'):
-    pass
+
+def fast_fuse(comp, left_suffix='_l', right_suffix='_r'):
+    """
+    Performs data fusion using a recordlinkage.Compare object.
+    All data is kept from both original data frames, renaming columns to avoid conflits.
+    The result is comp.vectors but with each rows populated with data from
+    the original two data frames corresponding to the compared pair.
+
+    :param recordlinkage.Compare comp: Compared pairs to be fused.
+    :param str left_suffix: The suffix stem to be used to resolve naming conflits for columns in df_a.
+    :param str right_suffix: The suffix stem to be used to resolve naming conflits for columns in df_b.
+    :return: pandas.DataFrame
+    """
+
+    working_df = copy.deepcopy(comp.vectors)
+    index_df = working_df.index.to_frame()
+
+    # Get appropriate columns from df_a and df_b
+    working_left = comp.df_a.iloc[list(index_df[0])]
+    working_right = comp.df_b.iloc[list(index_df[1])]
+
+    # Index data from left and right dataframes
+    working_left = working_left.set_index(working_df.index)
+    working_right = working_right.set_index(working_df.index)
+
+    # Get new column names
+    left_col_names = [new_identifier_name(c + left_suffix, working_df.columns.tolist()) for c in working_left.columns]
+    right_col_names = [new_identifier_name(c + right_suffix, working_df.columns.tolist() + left_col_names) for c in working_right.columns]
+
+    # Apply columnn names
+    working_left.columns = left_col_names
+    working_right.columns = right_col_names
+
+    return pd.concat([working_df, working_left, working_right],axis=1)
+    #return [working_df, working_left, working_right]
