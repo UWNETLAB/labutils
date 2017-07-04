@@ -3,7 +3,6 @@
 #   to be used with recordlinkage's Compare.compare() method
 # *****************************************************************************
 
-import warnings
 import pandas as pd
 import jellyfish
 import numpy as np
@@ -62,7 +61,6 @@ def compare_lists(s1, s2):
 def compare_fuzzy_substring(s1, s2):
     # TODO: Make the scoring scheme values optional parameters.
     # TODO: Second paragraph doesn't finish.
-    # Note: "dynamic programming"?
     """
        A custom comparison function to be used with the Compare.compare() method
        within recordlinkage. This is used to compare two strings, computing a
@@ -114,6 +112,9 @@ def compare_fuzzy_substring(s1, s2):
         """
         str1 = x[0]
         str2 = x[1]
+
+        if str1 is np.nan or str2 is np.nan:
+            return 0
 
         if min(len(str1), len(str2)) == 0:
             return 0
@@ -175,6 +176,10 @@ def compare_longest_substring(s1, s2):
         """
         str1 = x[0]
         str2 = x[1]
+
+        if str1 is np.nan or str2 is np.nan:
+            return 0
+
         if min(len(str1),len(str2)) == 0:
             return 0
 

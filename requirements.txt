@@ -1,2 +1,5 @@
 recordlinkage
 tidyextractors
+jellyfish
+numpy
+pandas
