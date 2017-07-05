@@ -14,6 +14,8 @@ test/twitter_data/txrc
 # PyCharm
 .idea/
 
+demo/
+
 # Distribution / packaging
 .Python
 env/
