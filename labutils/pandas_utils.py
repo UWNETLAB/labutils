@@ -30,7 +30,7 @@ def expand_on(df, col1, col2, rename1=None, rename2=None, drop=[], drop_collecti
 
         .. code-block:: python
 
-            self.expand_on('From', 'To', ['MessageID', 'Recipient'], rename1='From', rename2='Recipient')
+            self.expand_on(my_df, 'From', 'To', ['MessageID', 'Recipient'], rename1='From', rename2='Recipient')
 
         Columns to be expanded upon should be either atomic values or dictionaries of dictionaries. For example:
 
@@ -206,7 +206,7 @@ def drop_collection_columns(df):
         Drops columns containing collections (i.e. sets, dicts, lists) from a DataFrame.
         This method was pasted from ``tidyextractors`` on 2017-07-10.
 
-        :param pandas.DataFrame df: Usually self._data.
+        :param pandas.DataFrame df: Input data.
         :return: pandas.DataFrame
         """
         all_cols = df.columns
@@ -225,7 +225,7 @@ def col_type_set(col, df):
         This function was pasted from ``tidyextractors`` on 2017-07-10.
 
         :param str col: A column name.
-        :param pandas.DataFrame df: The data set. Usually ``self._data``.
+        :param pandas.DataFrame df: Input data.
         :return: A set of Types.
         """
         type_set = set()
