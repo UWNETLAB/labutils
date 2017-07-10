@@ -25,7 +25,7 @@ def rank_pairs(comp, by, method='cols',ascending=False):
 
     # A fresh copy of the comparison object for modification.
     working_comp = copy.deepcopy(comp)
-
+    
     # Sorting by columns is simple!
     if method == 'cols':
 
@@ -148,8 +148,8 @@ def fast_fuse(comp, left_suffix='_l', right_suffix='_r'):
     index_df = working_df.index.to_frame()
 
     # Get appropriate columns from df_a and df_b
-    working_left = comp.df_a.iloc[list(index_df[0])]
-    working_right = comp.df_b.iloc[list(index_df[1])]
+    working_left = comp.df_a.loc[list(index_df[0])]
+    working_right = comp.df_b.loc[list(index_df[1])]
 
     # Index data from left and right dataframes
     working_left = working_left.set_index(working_df.index)
