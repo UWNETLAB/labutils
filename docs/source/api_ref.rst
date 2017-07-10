@@ -1,5 +1,5 @@
 ``labutils`` API Reference
-=======================================
+==========================
 
 .. automodule:: labutils
 

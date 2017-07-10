@@ -268,4 +268,3 @@ def compare_except(s1, s2, exceptions=[]):
                 raise err
 
     return conc.apply(except_apply, axis=1)
-
