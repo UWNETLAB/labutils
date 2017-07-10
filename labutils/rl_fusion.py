@@ -39,7 +39,6 @@ def rank_pairs(comp, by, method='cols',ascending=False):
     # Sort by row sum for specified columns
     if method == 'sum':
 
-
         # Enforce input type.
         if not isinstance(by, list):
             raise ValueError('Value of "by" must be a list of column names.')

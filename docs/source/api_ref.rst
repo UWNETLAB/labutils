@@ -29,9 +29,13 @@ Feature Comparison
 
 This set of functions implement prototype comparison methods for use with ``recordlinkage``.
 
-.. autofunction:: compare_longest_substring
+.. autofunction:: lcss
 
-.. autofunction:: compare_fuzzy_substring
+.. autofunction:: normed_lcss
+
+.. autofunction:: fuzzy_lcss
+
+.. autofunction:: normed_fuzzy_lcss
 
 .. autofunction:: compare_in
 
