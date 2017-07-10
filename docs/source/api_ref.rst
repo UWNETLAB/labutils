@@ -40,3 +40,14 @@ This set of functions implement prototype comparison methods for use with ``reco
 .. autofunction:: compare_in
 
 .. autofunction:: compare_lists
+
+Pandas Utilities
+----------------
+
+.. autofunction:: clip_df
+
+.. autofunction:: expand_on
+
+.. autofunction:: drop_collection_columns
+
+.. autofunction:: col_type_set

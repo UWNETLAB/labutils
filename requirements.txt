@@ -3,3 +3,6 @@ tidyextractors
 jellyfish
 numpy
 pandas
+pyperclip
+tabulate
+tqdm

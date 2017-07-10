@@ -19,3 +19,4 @@
 from labutils.misc import *
 from labutils.rl_fusion import *
 from labutils.rl_compare import *
+from labutils.pandas_utils import *
