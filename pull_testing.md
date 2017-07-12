@@ -7,3 +7,6 @@ De quibus cupio scire quid sentias. Quasi vero, inquit, perpetua oratio rhetorum
 Occultum facinus esse potuerit, gaudebit; Duo Reges: constructio interrete. Sed ad haec, nisi molestum est, habeo quae velim.
 Videsne, ut haec concinant? Ita enim vivunt quidam, ut eorum vita refellatur oratio. Sed quanta sit alias,
 nunc tantum possitne esse tanta. At ego quem huic anteponam non audeo dicere.
+
+
+Steve was here.
