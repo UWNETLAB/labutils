@@ -11,8 +11,6 @@ import numpy as np
 # *****************************************************************************
 # Longest Common Substring Comparators
 # *****************************************************************************
-
-
 def _longest_common_substring(s1, s2):
     """
     A helper function implementation of the longest common substring algorithm,
@@ -99,7 +97,10 @@ def normed_lcss(s1, s2):
         str1 = x[0]
         str2 = x[1]
 
-        longest = _longest_common_substring(str1, str2)
+        if min(len(str1), len(str2)) == 0:
+            return 0
+
+        longest = _longest_common_substring(str1,str2)
 
         return longest / min(len(str1), len(str2))
 
@@ -196,6 +197,9 @@ def normed_fuzzy_lcss(s1, s2, match=1, mismatch=-.5, gap=-1):
         str1 = x[0]
         str2 = x[1]
 
+        if min(len(str1), len(str2)) == 0:
+            return 0
+
         nonlocal match
         nonlocal mismatch
         nonlocal gap
@@ -266,7 +270,6 @@ def fuzzy_lcss(s1, s2, match=1, mismatch=-.5, gap=-1):
 # *****************************************************************************
 # Collection Comparators
 # *****************************************************************************
-
 def compare_lists(s1, s2):
     """
     A custom comparison function to be used with the Compare.compare() method
