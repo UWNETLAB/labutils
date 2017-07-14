@@ -17,8 +17,10 @@ def clip_df(df, tablefmt='html'):
     :param str tablefmt: What type of table?
     :return: None.
     """
-    pyperclip.copy(tabulate.tabulate(df, headers=df.columns, tablefmt=tablefmt))
+    html = tabulate.tabulate(df, headers=df.columns, tablefmt=tablefmt)
+    pyperclip.copy(html)
     print('Copied {} table to clipboard!'.format(tablefmt))
+    return html
 
 
 def expand_on(df, col1, col2, rename1=None, rename2=None, drop=[], drop_collections=False):

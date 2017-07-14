@@ -7,40 +7,41 @@ import pandas as pd
 import jellyfish
 import numpy as np
 
+
 # *****************************************************************************
 # Longest Common Substring Comparators
 # *****************************************************************************
 
 
 def _longest_common_substring(s1, s2):
-        """
-        A helper function implementation of the longest common substring algorithm,
-        adapted from:
-        https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Longest_common_substring.
-        """
+    """
+    A helper function implementation of the longest common substring algorithm,
+    adapted from:
+    https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Longest_common_substring.
+    """
 
-        if s1 is np.nan or s2 is np.nan:
-            return 0
+    if s1 is np.nan or s2 is np.nan:
+        return 0
 
-        if min(len(s1),len(s2)) == 0:
-            return 0
+    if min(len(s1), len(s2)) == 0:
+        return 0
 
-        m = [[0] * (1 + len(s2)) for i in range(1 + len(s1))]  # Creating a matrix of 0s
+    m = [[0] * (1 + len(s2)) for i in range(1 + len(s1))]  # Creating a matrix of 0s
 
-        longest = 0
-        x_longest = 0
+    longest = 0
+    x_longest = 0
 
-        for x in range(1, 1 + len(s1)):
-            for y in range(1, 1 + len(s2)):
-                if s1[x - 1] == s2[y - 1]:  # Check if the chars match
-                    m[x][y] = m[x - 1][y - 1] + 1  # add 1 to the diagnol
-                    if m[x][y] > longest:
-                        longest = m[x][y]
-                        x_longest = x
-                else:
-                    m[x][y] = 0
+    for x in range(1, 1 + len(s1)):
+        for y in range(1, 1 + len(s2)):
+            if s1[x - 1] == s2[y - 1]:  # Check if the chars match
+                m[x][y] = m[x - 1][y - 1] + 1  # add 1 to the diagnol
+                if m[x][y] > longest:
+                    longest = m[x][y]
+                    x_longest = x
+            else:
+                m[x][y] = 0
 
-        return longest
+    return longest
 
 
 def lcss(s1, s2):
@@ -65,7 +66,7 @@ def lcss(s1, s2):
         str1 = x[0]
         str2 = x[1]
 
-        longest = _longest_common_substring(str1,str2)
+        longest = _longest_common_substring(str1, str2)
 
         return longest
 
@@ -98,7 +99,7 @@ def normed_lcss(s1, s2):
         str1 = x[0]
         str2 = x[1]
 
-        longest = _longest_common_substring(str1,str2)
+        longest = _longest_common_substring(str1, str2)
 
         return longest / min(len(str1), len(str2))
 
@@ -117,7 +118,7 @@ def _fuzzy_longest_common_substring(str1, str2, match, mismatch, gap):
     """
 
     if str1 is np.nan or str2 is np.nan:
-            return 0
+        return 0
 
     if min(len(str1), len(str2)) == 0:
         return 0
@@ -205,6 +206,7 @@ def normed_fuzzy_lcss(s1, s2, match=1, mismatch=-.5, gap=-1):
 
     return conc.apply(normed_fuzzy_lcss_apply, axis=1)
 
+
 def fuzzy_lcss(s1, s2, match=1, mismatch=-.5, gap=-1):
     """
     A custom comparison function to be used with the Compare.compare() method
@@ -260,6 +262,7 @@ def fuzzy_lcss(s1, s2, match=1, mismatch=-.5, gap=-1):
 
     return conc.apply(fuzzy_lcss_apply, axis=1)
 
+
 # *****************************************************************************
 # Collection Comparators
 # *****************************************************************************
@@ -304,7 +307,7 @@ def compare_lists(s1, s2):
             min_length = min(len(set1), len(set2))
             intersect_length = len(set1.intersection(set2))
 
-            return intersect_length/min_length
+            return intersect_length / min_length
 
         except Exception as err:
             if pd.isnull(x[0]) or pd.isnull(x[1]):
@@ -313,6 +316,7 @@ def compare_lists(s1, s2):
                 raise err
 
     return conc.apply(list_apply, axis=1)
+
 
 # Need to decide whether to actually include this or not
 def compare_in(s1, s2):
@@ -344,9 +348,9 @@ def compare_in(s1, s2):
                 if value == '':
                     return 0
                 elif value in check:
-                    return 1 - count/max_length
+                    return 1 - count / max_length
                 else:
-                    return score(value[0:-1], check, count+1)
+                    return score(value[0:-1], check, count + 1)
 
             return score(value, check)
         except Exception as err:
@@ -356,6 +360,7 @@ def compare_in(s1, s2):
                 raise err
 
     return concatenated.apply(in_apply, axis=1)
+
 
 # *****************************************************************************
 # Misc Comparators
