@@ -8,7 +8,7 @@ def new_identifier_name(base, names, sep='_'):
         * 'sum', 'sum2', and 'sum3' are taken, so 'sum4' is used.
 
         :param base: A base string e.g.
-        :return:
+        :return: None
         """
         # Find an unused column name
         col_name = base

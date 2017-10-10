@@ -7,7 +7,7 @@ import copy
 import pandas as pd
 from labutils.misc import new_identifier_name
 
-def rank_pairs(comp, by, method='cols',ascending=False):
+def rank_pairs(comp, by, method='cols', ascending=False, ):
     """
     rank_pairs sorts pairs from a recordlinkage.Compare object, based on computed comparison values.
 
