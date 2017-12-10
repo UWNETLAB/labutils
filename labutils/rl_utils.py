@@ -16,7 +16,7 @@ def transform_rl_rst(docstr, indent=''):
         info, desc = [s.strip() for s in s.split(':') if len(s.strip()) > 0]
         info = info.split(' ')
         if len(info) < 3:
-            raise Exception(f'No param type for {s}.')
+            raise Exception('No param type for {}.'.format(s))
         return {'name': info[-1], 'type': info[-2], 'desc': desc}
 
     def _parse_return(s):
