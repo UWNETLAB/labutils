@@ -1,18 +1,17 @@
-labutils
-========
+<a href="https://uwaterloo.ca/networks-lab/"><img src="http://www.johnmclevey.com/assets/img/logo.png" width="125"  align="right" /></a>
 
-Overview
---------
+# labutils
+
+## Overview
 
 ``labutils`` is a collection of utilities intended to be used by NetLab developers and researchers. ``labutils`` is a place to share useful Python code amongst NetLab members. Contributions may include miscellaneous helper functions, developer feature prototypes, or project-specific workhorse functions.
 
-Documentation
--------------
+# Documentation
 
-For detailed descriptions of everything in ``labutils``, check out our `Read the Docs page <http://labutils.readthedocs.io/en/latest/>`_
+For detailed descriptions of everything in ``labutils``, check out our `Read the Docs page <http://labutils.readthedocs.io/en/latest/>`
 
-Installing
-----------
+
+# Installing
 
 First, clone the ``labutils`` GitHub repository. ``labutils`` can then be installed by running ``python setup.py develop`` from inside the main directory.
 
